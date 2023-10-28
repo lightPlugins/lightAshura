@@ -120,7 +120,7 @@ public class Ashura extends JavaPlugin {
         pm.registerEvents(new OnFirstJoin(), this);
         pm.registerEvents(new BoxesOpener(), this);
         pm.registerEvents(new WorldInit(), this);
-        pm.registerEvents(new ItemDrop(), this);
+        //pm.registerEvents(new ItemDrop(), this);
         pm.registerEvents(new PlayerJoinMessageHandler(), this);
 
         borderMenuManager = new InventoryManager(this);
