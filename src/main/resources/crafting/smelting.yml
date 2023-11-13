@@ -1,0 +1,45 @@
+crafting:
+  items:
+    '0':
+      item-stack: 'itemsadder:mythril'
+      add-lore:
+        - ''
+        - 'Du benötigst folgendes:'
+        - ''
+        - '#current# / #need# Iron Ore'
+        - '#currentMoney# / #neededMoney# #currency#'
+        - '#neededLevel# / #currentLevel#'
+        - ''
+        - 'Status: #status#'
+      actions:
+        needed-items:
+          - 'raw_iron;3'
+        needed-money: 20
+        needed-level: 1
+        result-items:
+          - 'vanilla:iron_ingot;1'
+        give-exp: 50
+        sound: ENTITY_LEVEL_UP
+        volume: 1.0
+        pitch: 1.7
+    '1':
+      item-stack: 'itemsadder:mythril'
+      lore:
+        - 'Du benötigst folgendes:'
+        - ''
+        - '#current# / #need# Iron Ore'
+        - '#currentMoney# / #neededMoney# #currency#'
+        - '#neededLevel# / #currentLevel#'
+        - ''
+        - 'Status: #status#'
+      actions:
+        needed-items:
+          - 'vanilla:raw_iron;3'
+        needed-money: 20
+        needed-level: 1
+        result-items:
+          - 'vanilla:iron_ingot;1'
+        give-exp: 50
+        sound: ENTITY_LEVEL_UP
+        volume: 1.0
+        pitch: 1.7

@@ -27,6 +27,7 @@ import java.util.logging.Level;
 public class Ashura extends JavaPlugin {
 
     public static Ashura getInstance;
+    public static final String consolePrefix = "§r[light§cAshura§r] ";
 
     public HikariDataSource ds;
     public DatabaseConnection hikari;
@@ -52,11 +53,11 @@ public class Ashura extends JavaPlugin {
 
         getInstance = this;
 
-        settings = new FileManager(this, "settings.yml");
-        messages = new FileManager(this, "messages.yml");
-        boxes = new FileManager(this, "boxes.yml");
-        trades = new FileManager(this, "trades.yml");
-        border = new FileManager(this, "borders.yml");
+        settings = new FileManager(this, null, "settings.yml");
+        messages = new FileManager(this, null, "messages.yml");
+        boxes = new FileManager(this, null, "boxes.yml");
+        trades = new FileManager(this, null, "trades.yml");
+        border = new FileManager(this, null, "borders.yml");
 
         colorTranslation = new ColorTranslation();
 

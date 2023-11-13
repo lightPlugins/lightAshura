@@ -16,7 +16,7 @@ public class EcoLookup {
 
             List<VillagerTrade> villagerTrades = new ArrayList<>();
 
-            if(list.size() < 1) {
+            if(list.isEmpty()) {
                 return villagerTrades;
             }
 
