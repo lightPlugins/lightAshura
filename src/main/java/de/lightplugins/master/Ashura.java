@@ -7,11 +7,7 @@ import de.lightplugins.commands.AshuraCommandManager;
 import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
 import de.lightplugins.database.DatabaseConnection;
-import de.lightplugins.events.BoxesOpener;
-import de.lightplugins.events.PlayerJoinMessageHandler;
-import de.lightplugins.itemdrop.ItemDrop;
-import de.lightplugins.events.WorldInit;
-import de.lightplugins.events.OnFirstJoin;
+import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
@@ -97,7 +93,7 @@ public class Ashura extends JavaPlugin {
                 new PlaceholderAPI().register(); // initial lightEconomy placeholder
                 Bukkit.getLogger().log(Level.INFO, "[lightEconomy] Hooked into PlaceholderAPI");
 
-            }
+ }
         }
 
         /*######################################*/
@@ -123,6 +119,7 @@ public class Ashura extends JavaPlugin {
         pm.registerEvents(new WorldInit(), this);
         //pm.registerEvents(new ItemDrop(), this);
         pm.registerEvents(new PlayerJoinMessageHandler(), this);
+        pm.registerEvents(new DropManipulation(), this);
 
         borderMenuManager = new InventoryManager(this);
         borderMenuManager.init();

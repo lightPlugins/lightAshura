@@ -3,6 +3,8 @@ package de.lightplugins.itemdrop;
 import de.lightplugins.master.Ashura;
 import de.lightplugins.util.ItemGlow;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -25,6 +27,28 @@ import java.util.logging.Level;
 public class ItemDrop implements Listener {
 
     private Map<UUID, BukkitRunnable> itemTimers = new HashMap<>();
+
+    @EventHandler
+    public void onWheatBreak(BlockBreakEvent e) {
+
+        Block block = e.getBlock();
+        World world = e.getPlayer().getWorld();
+
+        if(!world.getName().equalsIgnoreCase("domarsk_10")) {
+            return;
+        }
+
+        Bukkit.getLogger().log(Level.WARNING, "TEST " + block.getBlockData().getAsString());
+
+        if(block.getType().equals(Material.WHEAT)) {
+            Ageable ageable = (Ageable) block.getBlockData();
+            if(ageable.getAge() == 7) {
+                block.getDrops().clear();
+                block.getDrops().add(new ItemStack(Material.WHEAT, 1));
+            }
+        }
+
+    }
 
     @EventHandler
     public void onBlockBreakEvent(ItemSpawnEvent e) {

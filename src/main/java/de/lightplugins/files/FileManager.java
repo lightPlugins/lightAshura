@@ -24,6 +24,31 @@ public class FileManager {
         this.plugin = plugin;
         this.subfolderName = subfolderName;
         this.configName = configName;
+
+        // Debug-Ausgabe hinzufügen
+        plugin.getLogger().info("subfolderName: " + subfolderName);
+        plugin.getLogger().info("configName: " + configName);
+
+        // Initialisiere configFile bevor saveDefaultConfig aufgerufen wird
+        if(subfolderName != null) {
+            File dataFolder = this.plugin.getDataFolder();
+            plugin.getLogger().info("dataFolder: " + dataFolder.getAbsolutePath());
+
+            File subFolder = new File(dataFolder, subfolderName);
+            if (!subFolder.exists()) {
+                boolean success = subFolder.mkdirs();
+                if (!success) {
+                    plugin.getLogger().warning("Could not create subfolder: " + subFolder.getPath());
+                }
+            }
+
+            this.configFile = new File(subFolder, configName);
+            plugin.getLogger().info("configFile: " + configFile.getAbsolutePath());
+        } else {
+            this.configFile = new File(this.plugin.getDataFolder(), configName);
+            plugin.getLogger().info("configFile: " + configFile.getAbsolutePath());
+        }
+
         saveDefaultConfig(configName);
     }
 

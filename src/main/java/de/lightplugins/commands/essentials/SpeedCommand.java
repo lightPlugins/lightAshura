@@ -35,12 +35,12 @@ public class SpeedCommand implements CommandExecutor {
 
                 if(speed < 0f) {
                     Ashura.util.sendMessage(player,
-                            "&cUngültige Zahl. Verwende #dc143d1 &7- #dc143d10");
+                            "&cUngültige Zahl. Verwende #dc143d1 &7- #dc143d5");
                     return false;
                 }
                  if(speed > 5f) {
                      Ashura.util.sendMessage(player,
-                             "&cUngültige Zahl. Verwende #dc143d1 &7- #dc143d10");
+                             "&cUngültige Zahl. Verwende #dc143d1 &7- #dc143d5");
                      return false;
                  }
 
