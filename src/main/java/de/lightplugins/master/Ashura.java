@@ -3,6 +3,7 @@ package de.lightplugins.master;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.willfp.ecojobs.EcoJobsPlugin;
 import com.zaxxer.hikari.HikariDataSource;
+import de.lightplugins.comandblocker.AllowedCommands;
 import de.lightplugins.commands.AshuraCommandManager;
 import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
@@ -33,6 +34,7 @@ public class Ashura extends JavaPlugin {
     public static FileManager boxes;
     public static FileManager trades;
     public static FileManager border;
+    public static FileManager allowedCommands;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
@@ -54,6 +56,7 @@ public class Ashura extends JavaPlugin {
         boxes = new FileManager(this, null, "boxes.yml");
         trades = new FileManager(this, null, "trades.yml");
         border = new FileManager(this, null, "borders.yml");
+        allowedCommands = new FileManager(this, null, "allowed-commands.yml");
 
         colorTranslation = new ColorTranslation();
 
@@ -120,6 +123,8 @@ public class Ashura extends JavaPlugin {
         //pm.registerEvents(new ItemDrop(), this);
         pm.registerEvents(new PlayerJoinMessageHandler(), this);
         pm.registerEvents(new DropManipulation(), this);
+        pm.registerEvents(new AllowedCommands(), this);
+        pm.registerEvents(new OnDeathSpawn(), this);
 
         borderMenuManager = new InventoryManager(this);
         borderMenuManager.init();

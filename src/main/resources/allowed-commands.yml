@@ -1,0 +1,14 @@
+commands:
+  enable: true
+  data:
+    '1':
+      commandList:
+        - 'land'
+        - 'l'
+        - 'land map'
+        - 'map'
+        - 'view'
+        - 'ah'
+        - 'ah sell'
+      deny-message: '&cEntweder existiert dieser Befehl nicht oder du hast dazu keine Rechte'
+
