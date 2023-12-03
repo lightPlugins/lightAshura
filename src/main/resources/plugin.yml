@@ -6,8 +6,8 @@ version: 1.0.0
 main: de.lightplugins.master.Ashura
 api-version: 1.20
 depend: [Vault]
-softdepend: [PlaceholderAPI, EcoItems, WorldGuard, Eco, eco, EcoJobs]
-loadbefore: [Essentials, WorldEdit]
+softdepend: [PlaceholderAPI, WorldGuard, EcoItems, Eco, eco, EcoJobs]
+loadbefore: [Essentials]
 commands:
   a:
     description: Set the time of the current world to day
