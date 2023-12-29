@@ -7,6 +7,7 @@ import de.lightplugins.comandblocker.AllowedCommands;
 import de.lightplugins.commands.AshuraCommandManager;
 import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
+import de.lightplugins.commands.tutorial.TutorialCommand;
 import de.lightplugins.database.DatabaseConnection;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
@@ -35,6 +36,7 @@ public class Ashura extends JavaPlugin {
     public static FileManager trades;
     public static FileManager border;
     public static FileManager allowedCommands;
+    public static FileManager tutorial;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
@@ -42,6 +44,7 @@ public class Ashura extends JavaPlugin {
     public Boolean isEcoJobs = false;
 
     public static InventoryManager borderMenuManager;
+    public static InventoryManager tutorialManager;
 
 
 
@@ -57,6 +60,7 @@ public class Ashura extends JavaPlugin {
         trades = new FileManager(this, null, "trades.yml");
         border = new FileManager(this, null, "borders.yml");
         allowedCommands = new FileManager(this, null, "allowed-commands.yml");
+        tutorial = new FileManager(this, null, "tutorial.yml");
 
         colorTranslation = new ColorTranslation();
 
@@ -84,19 +88,13 @@ public class Ashura extends JavaPlugin {
                 }
             }
 
-            if (pluginName.getName().equals("EcoJobs")) {
-                Plugin newPlugin = this.getServer().getPluginManager().getPlugin("EcoJobs");
-                if (newPlugin instanceof EcoJobsPlugin) {
-                    getLogger().info("[lightAshura] Successfully hooked into EcoJobs");
-                    isEcoJobs = true;
+            if (pluginName.getName().equals("PlaceholderAPI")) {
+                if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                    new PlaceholderAPI().register(); // initial lightEconomy placeholder
+                    Bukkit.getLogger().log(Level.INFO, "[lightEconomy] Hooked into PlaceholderAPI");
+
                 }
             }
-
-            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                new PlaceholderAPI().register(); // initial lightEconomy placeholder
-                Bukkit.getLogger().log(Level.INFO, "[lightEconomy] Hooked into PlaceholderAPI");
-
- }
         }
 
         /*######################################*/
@@ -111,8 +109,9 @@ public class Ashura extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("gmc")).setExecutor(new CreativeCommand());
         Objects.requireNonNull(this.getCommand("gms")).setExecutor(new SurvivalCommand());
         Objects.requireNonNull(this.getCommand("speed")).setExecutor(new SpeedCommand());
-        Objects.requireNonNull(this.getCommand("heal")).setExecutor(new HealCommand());
+        Objects.requireNonNull(this.getCommand("h")).setExecutor(new HealCommand());
         Objects.requireNonNull(this.getCommand("sun")).setExecutor(new SunCommand());
+        Objects.requireNonNull(this.getCommand("tutorial")).setExecutor(new TutorialCommand());
 
 
         PluginManager pm = Bukkit.getPluginManager();
@@ -124,10 +123,11 @@ public class Ashura extends JavaPlugin {
         pm.registerEvents(new PlayerJoinMessageHandler(), this);
         pm.registerEvents(new DropManipulation(), this);
         pm.registerEvents(new AllowedCommands(), this);
-        pm.registerEvents(new OnDeathSpawn(), this);
 
         borderMenuManager = new InventoryManager(this);
+        tutorialManager = new InventoryManager(this);
         borderMenuManager.init();
+        tutorialManager.init();
 
         Bukkit.getLogger().log(Level.FINE, "[lightAshura] Successfully started lightAshrua.");
 

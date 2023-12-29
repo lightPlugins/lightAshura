@@ -3,6 +3,7 @@ package de.lightplugins.events;
 import com.willfp.eco.core.items.Items;
 import de.lightplugins.enums.PersistentDataPaths;
 import de.lightplugins.master.Ashura;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -100,7 +101,7 @@ public class BoxesOpener implements Listener {
                         /*       @param firstLineSplit = the item type. console:consoleCommand -> [0]:[1]       */
 
                         double singleChance = Double.parseDouble(splitContent[2]);
-                        double amount = Double.parseDouble(splitContent[1]);
+                        int amount = Integer.parseInt(splitContent[1]);
 
                         String contentType = firstLineSplit[0];
 
@@ -160,6 +161,36 @@ public class BoxesOpener implements Listener {
                                 }
 
                             case "vanilla" :
+
+                                if(Ashura.util.calculateProbability(singleChance)) {
+
+                                    ItemStack vanilla = new ItemStack(Material.valueOf(firstLineSplit[1]));
+                                    ItemMeta vanillaMeta = vanilla.getItemMeta();
+                                    if(vanillaMeta == null) {
+                                        return;
+                                    }
+
+                                    if(amount > 1) {
+                                        vanilla.setAmount((int)amount);
+                                    }
+
+                                    String itemName = vanilla.getType().toString().replace("_", " ").toLowerCase();
+
+                                    if(Ashura.util.isInventoryFull(player)) {
+                                        player.getWorld().dropItemNaturally(player.getLocation(), vanilla);
+                                        Ashura.util.sendMessage(player, "&7Du hast #ffdc73" + amount + " &7x #ffdc73"
+                                                + itemName + " &7bekommen.");
+                                        break;
+
+                                    }
+                                    player.getInventory().addItem(vanilla);
+                                    Ashura.util.sendMessage(player, "&7Du hast #ffdc73" + amount + " &7x #ffdc73"
+                                            + itemName + " &7bekommen.");
+
+                                    break;
+                                }
+
+
                             case "command" :
                             case "console" :
 

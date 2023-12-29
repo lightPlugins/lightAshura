@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 
 public class HealCommand implements CommandExecutor {
 
@@ -30,6 +31,7 @@ public class HealCommand implements CommandExecutor {
 
             target.setHealth(maxHealth);
             target.setFoodLevel(20);
+            target.setSaturation(20);
             Ashura.util.sendMessage(player, "&7Du hast #dc143d" + args[0] + " &7geheilt.");
             Ashura.util.sendMessage(target, "&7Du wurdest von #dc143d" + player.getName() + " &7geheilt.");
             return false;

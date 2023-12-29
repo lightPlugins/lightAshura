@@ -1,0 +1,6 @@
+guide:
+  '1':
+    material: WRITABLE_BOOK
+    displayname: Anfänger Guide
+    lore:
+      - '/land claim'

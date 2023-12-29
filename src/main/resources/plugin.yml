@@ -21,7 +21,9 @@ commands:
     description: Set the gamemode to survival
   speed:
     description: Change the fly and walk speed
-  heal:
-    description: Change the fly and walk speed
+  h:
+    description: restore hunger and health
   sun:
     description: Change the fly and walk speed
+  tutorial:
+    description: Opens the server guide
