@@ -27,3 +27,8 @@ commands:
     description: Change the fly and walk speed
   tutorial:
     description: Opens the server guide
+  discord:
+    description: Opens the server guide
+    aliases: [dc]
+  karte:
+    description: Opens the server guide

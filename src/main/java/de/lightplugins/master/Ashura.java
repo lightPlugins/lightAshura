@@ -5,6 +5,8 @@ import com.willfp.ecojobs.EcoJobsPlugin;
 import com.zaxxer.hikari.HikariDataSource;
 import de.lightplugins.comandblocker.AllowedCommands;
 import de.lightplugins.commands.AshuraCommandManager;
+import de.lightplugins.commands.DiscordCommand;
+import de.lightplugins.commands.MapCommand;
 import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
 import de.lightplugins.commands.tutorial.TutorialCommand;
@@ -112,6 +114,9 @@ public class Ashura extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("h")).setExecutor(new HealCommand());
         Objects.requireNonNull(this.getCommand("sun")).setExecutor(new SunCommand());
         Objects.requireNonNull(this.getCommand("tutorial")).setExecutor(new TutorialCommand());
+
+        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
+        Objects.requireNonNull(this.getCommand("karte")).setExecutor(new MapCommand());
 
 
         PluginManager pm = Bukkit.getPluginManager();
