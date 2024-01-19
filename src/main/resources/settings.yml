@@ -41,3 +41,6 @@ settings:
           passthrough: deny
           use: allow
           chestAccess: allow
+  spawnOnJoin:
+    enable: true
+    command: 'warp lobby #playername#'
