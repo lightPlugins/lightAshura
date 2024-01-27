@@ -5,7 +5,7 @@ import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.core.spawning.spawners.SpawnerManager;
 import org.bukkit.Location;
 
-public class SpawnInterval {
+public class CreateSpawner {
 
     public void createMythicSpawner(Location location, String islandID) {
         SpawnerManager spawnerManager = MythicBukkit.inst().getSpawnerManager();
@@ -17,7 +17,6 @@ public class SpawnInterval {
         spawnerManager.getSpawnerByName(islandID).setMobsPerSpawn(8);
         spawnerManager.getSpawnerByName(islandID).setLeashRange(150);
         spawnerManager.getSpawnerByName(islandID).setShowFlames(true);
-
 
     }
 }

@@ -18,43 +18,17 @@ public class FileManager {
     private FileConfiguration dataConfig = null;
     private File configFile = null;
     private final String configName;
-    private final String subfolderName; // Neue Variable für den Unterordner
 
-    public FileManager(Ashura plugin, String subfolderName, String configName) {
+    public FileManager(Ashura plugin, String configName) {
         this.plugin = plugin;
-        this.subfolderName = subfolderName;
         this.configName = configName;
-
-        // Debug-Ausgabe hinzufügen
-        plugin.getLogger().info("subfolderName: " + subfolderName);
-        plugin.getLogger().info("configName: " + configName);
-
-        // Initialisiere configFile bevor saveDefaultConfig aufgerufen wird
-        if(subfolderName != null) {
-            File dataFolder = this.plugin.getDataFolder();
-            plugin.getLogger().info("dataFolder: " + dataFolder.getAbsolutePath());
-
-            File subFolder = new File(dataFolder, subfolderName);
-            if (!subFolder.exists()) {
-                boolean success = subFolder.mkdirs();
-                if (!success) {
-                    plugin.getLogger().warning("Could not create subfolder: " + subFolder.getPath());
-                }
-            }
-
-            this.configFile = new File(subFolder, configName);
-            plugin.getLogger().info("configFile: " + configFile.getAbsolutePath());
-        } else {
-            this.configFile = new File(this.plugin.getDataFolder(), configName);
-            plugin.getLogger().info("configFile: " + configFile.getAbsolutePath());
-        }
-
         saveDefaultConfig(configName);
+
     }
 
     public void reloadConfig(String configName) {
         if(this.configFile == null)
-            this.configFile = new File(this.plugin.getDataFolder() + File.separator + subfolderName, configName);
+            this.configFile = new File(this.plugin.getDataFolder(), configName);
 
         this.plugin.reloadConfig();
 
@@ -72,6 +46,7 @@ public class FileManager {
             reloadConfig(configName);
 
         return this.dataConfig;
+
     }
 
     public void saveConfig() {
@@ -86,25 +61,13 @@ public class FileManager {
     }
 
     private void saveDefaultConfig(String configName) {
-        if (this.configFile == null) {
-            File dataFolder = this.plugin.getDataFolder();
-            if(subfolderName != null) {
-                File subFolder = new File(dataFolder, subfolderName);
-                if (!subFolder.exists()) {
-                    boolean success = subFolder.mkdirs();
-                    if (!success) {
-                        plugin.getLogger().warning("Could not create subfolder: " + subFolder.getPath());
-                    }
-                }
+        if (this.configFile == null)
+            this.configFile = new File(this.plugin.getDataFolder(), this.configName);
 
-                this.configFile = new File(subFolder, configName);
-            }
-        }
-
-        assert this.configFile != null;
         if (!this.configFile.exists()) {
             this.plugin.saveResource(configName, false);
         } else {
+            // Merge the default config into the existing config
             FileConfiguration defaultConfig = YamlConfiguration.loadConfiguration(
                     new InputStreamReader(Objects.requireNonNull(this.plugin.getResource(configName))));
             FileConfiguration existingConfig = getConfig();
@@ -113,13 +76,16 @@ public class FileManager {
                     Bukkit.getConsoleSender().sendMessage(Ashura.consolePrefix +
                             "Found §cnon existing config key§r. Adding §c" + key + " §rinto §c" + configName);
                     existingConfig.set(key, defaultConfig.get(key));
+
                 }
             }
 
             try {
+
                 existingConfig.save(configFile);
                 Bukkit.getConsoleSender().sendMessage(Ashura.consolePrefix +
                         "Your config §c" + configName + " §ris up to date.");
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

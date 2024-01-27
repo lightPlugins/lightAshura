@@ -1,0 +1,8 @@
+lootTable:
+  'stage-1':
+    common:
+      chance: 50
+      actions:
+        - 'VAULT;15'
+        - 'EXP;75'
+        - ''

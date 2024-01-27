@@ -9,9 +9,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
-public class OnMobSpawn implements Listener {
+public class HandleMobHealthBar implements Listener {
 
     @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
@@ -34,6 +35,11 @@ public class OnMobSpawn implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
+
+        if(event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)) {
+            // maybe add ability to buy this feature in-game lul
+            event.setCancelled(true);
+        }
 
         if(event.getEntity() instanceof Animals) {
             Bukkit.getScheduler().runTaskLater(Ashura.getInstance, () -> {

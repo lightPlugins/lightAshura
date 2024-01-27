@@ -41,9 +41,11 @@ public class OnIslandDisband implements Listener {
         Ashura.getInstance.localSkyhuntData.remove(island.getName());
         Ashura.getInstance.skyhuntPlayerData.deleteIsland(island.getName()).thenAccept(result -> {
             if(result) {
-                // SuperiorPlayer.asPlayeR() is null lol
+                // SuperiorPlayer.asPlayer() is null lol
+                Bukkit.getConsoleSender().sendMessage("Island Data successfully deleted.");
                 return;
             }
+            Bukkit.getConsoleSender().sendMessage("Something went wrong in island data deleting");
         });
     }
 }

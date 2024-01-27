@@ -6,9 +6,8 @@ import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.master.Ashura;
-import de.lightplugins.skyhunt.manager.SpawnInterval;
+import de.lightplugins.skyhunt.manager.CreateSpawner;
 import io.lumine.mythic.bukkit.MythicBukkit;
-import io.lumine.mythic.core.spawning.spawners.MythicSpawner;
 import io.lumine.mythic.core.spawning.spawners.SpawnerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -84,7 +83,7 @@ public class OnIslandCreate implements Listener {
 
                             counter.getAndIncrement();
                             singleEntity.remove();
-                            SpawnInterval spawnInterval = new SpawnInterval();
+                            CreateSpawner spawnInterval = new CreateSpawner();
                             spawnInterval.createMythicSpawner(
                                     singleEntity.getLocation(), islandID + "_" + counter);
 
