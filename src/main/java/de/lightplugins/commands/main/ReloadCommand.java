@@ -40,6 +40,7 @@ public class ReloadCommand extends SubCommand {
             Ashura.border.reloadConfig("trades.yml");
             Ashura.allowedCommands.reloadConfig("allowed-commands.yml");
             Ashura.tutorial.reloadConfig("tutorial.yml");
+            Ashura.playerdata.reloadConfig("playerdata.yml");
 
             Ashura.util.sendMessage(player, "&7Configs wurden #dc143derfolgreich &7neu geladen.");
         }

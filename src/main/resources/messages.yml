@@ -1,4 +1,4 @@
-prefix: '#dc143d&lASHURA &8●⏺ &7'
+prefix: '#ffdc73&lASHURA &8●⏺ &7'
 discordMessage:
   - ' '
   - '    #ddeceeJoine jetzt unseren Discord Server, um immer'
@@ -14,3 +14,4 @@ mapCommand:
   - ' '
   - '    #ffdc73▪ &7https://map.beamplex.de/'
   - ' '
+getBoxOnFirstJoin: '&7Als #ffdc73Willkommensgeschenk &7hast du eine #ffdc73Starterbox &7erhalten. #ffdc73Rechtsklicke &7diese, um den Inhalt zu bekommen.'

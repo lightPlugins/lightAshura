@@ -1,7 +1,7 @@
 package de.lightplugins.master;
 
+import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.willfp.ecojobs.EcoJobsPlugin;
 import com.zaxxer.hikari.HikariDataSource;
 import de.lightplugins.comandblocker.AllowedCommands;
 import de.lightplugins.commands.AshuraCommandManager;
@@ -11,16 +11,26 @@ import de.lightplugins.commands.essentials.*;
 import de.lightplugins.commands.tabcompletion.AshuraTabCompletion;
 import de.lightplugins.commands.tutorial.TutorialCommand;
 import de.lightplugins.database.DatabaseConnection;
+import de.lightplugins.database.querys.SkyhuntPlayerData;
+import de.lightplugins.database.tables.PlayerDataTable;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
+import de.lightplugins.skyhunt.commands.StageOne;
+import de.lightplugins.skyhunt.events.OnIslandCreate;
+import de.lightplugins.skyhunt.events.OnIslandDisband;
+import de.lightplugins.skyhunt.events.OnMobSpawn;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
 import fr.minuskube.inv.InventoryManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -39,14 +49,19 @@ public class Ashura extends JavaPlugin {
     public static FileManager border;
     public static FileManager allowedCommands;
     public static FileManager tutorial;
+    public static FileManager playerdata;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
     public Boolean isWorldGuard = false;
     public Boolean isEcoJobs = false;
 
+    public SkyhuntPlayerData skyhuntPlayerData;
+
     public static InventoryManager borderMenuManager;
     public static InventoryManager tutorialManager;
+
+    public HashMap<String, Integer> localSkyhuntData = new HashMap<>();
 
 
 
@@ -63,20 +78,13 @@ public class Ashura extends JavaPlugin {
         border = new FileManager(this, null, "borders.yml");
         allowedCommands = new FileManager(this, null, "allowed-commands.yml");
         tutorial = new FileManager(this, null, "tutorial.yml");
+        playerdata = new FileManager(this, null, "playerdata.yml");
 
         colorTranslation = new ColorTranslation();
 
         util = new Util();
 
-    }
-
-    public void onEnable() {
-
-        /*  Initalize Database and connect driver  */
-
-        this.hikari = new DatabaseConnection();
-        // hikari.connectToDataBaseViaMariaDB();
-
+        skyhuntPlayerData = new SkyhuntPlayerData(this);
 
         /*  SetUp WorldGuard */
 
@@ -86,6 +94,8 @@ public class Ashura extends JavaPlugin {
                 Plugin newPlugin = this.getServer().getPluginManager().getPlugin("WorldGuard");
                 if (newPlugin instanceof WorldGuardPlugin) {
                     getLogger().info("[lightAshura] Successfully hooked into WorldGuard");
+                    WorldGuardHook worldGuardHook = new WorldGuardHook();
+                    worldGuardHook.setupCustomFlags();
                     isWorldGuard = true;
                 }
             }
@@ -98,6 +108,23 @@ public class Ashura extends JavaPlugin {
                 }
             }
         }
+
+    }
+
+    public void onEnable() {
+
+        /*  Initalize Database and connect driver  */
+
+        this.hikari = new DatabaseConnection();
+
+        if(settings.getConfig().getBoolean("mysql.enable")) {
+            hikari.connectToDataBaseViaMariaDB();
+            Bukkit.getLogger().log(Level.INFO, "[lightAshura] Successfully connected to Database");
+            PlayerDataTable playerDataTable= new PlayerDataTable();
+            playerDataTable.createTable();
+        }
+
+        Bukkit.getLogger().log(Level.INFO, "[lightAshura] Created PlayerDataTable");
 
         /*######################################*/
 
@@ -126,6 +153,7 @@ public class Ashura extends JavaPlugin {
         //pm.registerEvents(new WorldInit(), this);
         //pm.registerEvents(new ItemDrop(), this);
         pm.registerEvents(new PlayerJoinMessageHandler(), this);
+        // a "wheat" y thing xd lol
         pm.registerEvents(new DropManipulation(), this);
         pm.registerEvents(new AllowedCommands(), this);
 
@@ -133,6 +161,13 @@ public class Ashura extends JavaPlugin {
         tutorialManager = new InventoryManager(this);
         borderMenuManager.init();
         tutorialManager.init();
+
+        if(settings.getConfig().getBoolean("settings.skyhunt.enable")) {
+            SuperiorSkyblockAPI.registerCommand(new StageOne());
+            pm.registerEvents(new OnIslandCreate(), this);
+            pm.registerEvents(new OnIslandDisband(), this);
+            pm.registerEvents(new OnMobSpawn(), this);
+        }
 
         Bukkit.getLogger().log(Level.FINE, "[lightAshura] Successfully started lightAshrua.");
 

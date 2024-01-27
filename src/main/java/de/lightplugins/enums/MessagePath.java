@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public enum MessagePath {
 
     Prefix("prefix"),
+    getBoxOnFirstJoin("getBoxOnFirstJoin"),
 
     ;
 

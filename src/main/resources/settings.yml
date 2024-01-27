@@ -15,6 +15,8 @@ mysql:
     cachePrepStmts: true
     useServerPrepStmts: true
 settings:
+  skyhunt:
+    enable: true
   onServerJoin:
     commands:
       enable: true
@@ -42,5 +44,8 @@ settings:
           use: allow
           chestAccess: allow
   spawnOnJoin:
-    enable: true
+    enable: false
     command: 'warp lobby #playername#'
+  starterBox:
+    enable: false
+    boxID: 'starterPack'
