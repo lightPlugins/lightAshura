@@ -1,4 +1,4 @@
-package de.lightplugins.skyhunt.commands;
+package de.lightplugins.skyhunt.skyCommands;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblock;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class StageOne implements SuperiorCommand {
+public final class CreateStageCommand implements SuperiorCommand {
 
     private static final int MAX_ISLAND_SIZE = 200;
 
@@ -69,8 +69,8 @@ public final class StageOne implements SuperiorCommand {
 
     @Override
     public void execute(SuperiorSkyblock plugin, CommandSender sender, String[] args) {
-        // I know that the sender is a player, as I disabled the console from executing.
         // TODO check player is not null
+
         SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer((Player) sender);
         List<Island> allIslands = plugin.getGrid().getIslands();
 

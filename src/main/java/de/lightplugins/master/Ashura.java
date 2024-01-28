@@ -15,22 +15,19 @@ import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.database.tables.PlayerDataTable;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
-import de.lightplugins.skyhunt.commands.StageOne;
+import de.lightplugins.skyhunt.skyCommands.CreateStageCommand;
 import de.lightplugins.skyhunt.events.OnIslandCreate;
 import de.lightplugins.skyhunt.events.OnIslandDisband;
-import de.lightplugins.skyhunt.events.OnMobSpawn;
+import de.lightplugins.skyhunt.events.HandleMobHealthBar;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
 import fr.minuskube.inv.InventoryManager;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -50,6 +47,7 @@ public class Ashura extends JavaPlugin {
     public static FileManager allowedCommands;
     public static FileManager tutorial;
     public static FileManager playerdata;
+    public static FileManager stages;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
@@ -71,14 +69,15 @@ public class Ashura extends JavaPlugin {
 
         getInstance = this;
 
-        settings = new FileManager(this, null, "settings.yml");
-        messages = new FileManager(this, null, "messages.yml");
-        boxes = new FileManager(this, null, "boxes.yml");
-        trades = new FileManager(this, null, "trades.yml");
-        border = new FileManager(this, null, "borders.yml");
-        allowedCommands = new FileManager(this, null, "allowed-commands.yml");
-        tutorial = new FileManager(this, null, "tutorial.yml");
-        playerdata = new FileManager(this, null, "playerdata.yml");
+        settings = new FileManager(this, "settings.yml");
+        messages = new FileManager(this, "messages.yml");
+        boxes = new FileManager(this, "boxes.yml");
+        trades = new FileManager(this, "trades.yml");
+        border = new FileManager(this, "borders.yml");
+        allowedCommands = new FileManager(this, "allowed-commands.yml");
+        tutorial = new FileManager(this, "tutorial.yml");
+        playerdata = new FileManager(this, "playerdata.yml");
+        stages = new FileManager(this, "skyhunt/stages.yml");
 
         colorTranslation = new ColorTranslation();
 
@@ -164,10 +163,10 @@ public class Ashura extends JavaPlugin {
         tutorialManager.init();
 
         if(settings.getConfig().getBoolean("settings.skyhunt.enable")) {
-            SuperiorSkyblockAPI.registerCommand(new StageOne());
+            SuperiorSkyblockAPI.registerCommand(new CreateStageCommand());
             pm.registerEvents(new OnIslandCreate(), this);
             pm.registerEvents(new OnIslandDisband(), this);
-            pm.registerEvents(new OnMobSpawn(), this);
+            pm.registerEvents(new HandleMobHealthBar(), this);
         }
 
         Bukkit.getLogger().log(Level.FINE, "[lightAshura] Successfully started lightAshrua.");
