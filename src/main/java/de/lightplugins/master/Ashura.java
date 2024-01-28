@@ -120,7 +120,7 @@ public class Ashura extends JavaPlugin {
         if(settings.getConfig().getBoolean("mysql.enable")) {
             hikari.connectToDataBaseViaMariaDB();
             Bukkit.getLogger().log(Level.INFO, "[lightAshura] Successfully connected to Database");
-            PlayerDataTable playerDataTable= new PlayerDataTable();
+            PlayerDataTable playerDataTable = new PlayerDataTable();
             playerDataTable.createTable();
         }
 
@@ -141,6 +141,7 @@ public class Ashura extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("h")).setExecutor(new HealCommand());
         Objects.requireNonNull(this.getCommand("sun")).setExecutor(new SunCommand());
         Objects.requireNonNull(this.getCommand("tutorial")).setExecutor(new TutorialCommand());
+        Objects.requireNonNull(this.getCommand("trash")).setExecutor(new TrashInventoryCommand());
 
         Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
         Objects.requireNonNull(this.getCommand("karte")).setExecutor(new MapCommand());

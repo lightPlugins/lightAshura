@@ -32,3 +32,6 @@ commands:
     aliases: [dc]
   karte:
     description: Opens the server guide
+  trash:
+    description: Opens the trash can
+    aliases: [mülleimer]
