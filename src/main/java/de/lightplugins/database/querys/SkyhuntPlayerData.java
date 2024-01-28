@@ -17,10 +17,6 @@ package de.lightplugins.database.querys;
  */
 
 import de.lightplugins.master.Ashura;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +24,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -139,10 +135,9 @@ public class SkyhuntPlayerData {
         return CompletableFuture.supplyAsync(() -> {
 
             try (Connection connection = plugin.ds.getConnection();
-                 PreparedStatement ps = prepareNewStageForPlayer(islandID, kills, connection)) {
+                 PreparedStatement ps = prepareUpdateKills(islandID, kills, connection)) {
 
                 if(hasAlreadyStage(islandID).get()) {
-
                     ps.execute();
                     logInfo("Successfully updated kills on island ID " + islandID);
                     return true;
@@ -157,13 +152,28 @@ public class SkyhuntPlayerData {
         });
     }
 
+    private PreparedStatement prepareUpdateKills(String islandID, int kills, Connection connection) throws SQLException {
+
+        PreparedStatement ps = connection.prepareStatement("UPDATE " + tableName + " SET kills = ? WHERE islandID = ?");
+        ps.setInt(1, kills);
+        ps.setString(2, islandID);
+        return ps;
+    }
+
+    //  ----------------------------------------------------------------  \\
+
     public CompletableFuture<Integer> getKills(String islandID) {
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = plugin.ds.getConnection();
                  PreparedStatement ps = prepareGetKills(islandID, connection)) {
 
                 ResultSet rs = ps.executeQuery();
-                return rs.getInt("kills");
+                if (rs.next()) {
+                    return rs.getInt("kills");
+                } else {
+                    // Wenn es keinen Datensatz gibt, handle dies entsprechend
+                    return 0;
+                }
             } catch (SQLException e) {
                 logError("An error occurred while searching for kills with Island ID " + islandID, e);
                 return 0;
@@ -173,26 +183,13 @@ public class SkyhuntPlayerData {
 
 
     private PreparedStatement prepareGetKills(String islandID, Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement("DELETE FROM " + tableName + " WHERE islandID = ?");
+        PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE islandID = ?");
         ps.setString(1, islandID);
         return ps;
     }
 
     //  ----------------------------------------------------------------  \\
 
-
-    private PreparedStatement prepareSetKills(
-            String islandID,
-            int kills,
-            Connection connection) throws SQLException {
-
-        PreparedStatement ps = connection.prepareStatement(
-                "UPDATE " + tableName + " SET kills = ? WHERE islandID = ?");
-
-        ps.setString(1, islandID);
-        ps.setInt(2, kills);
-        return ps;
-    }
 
     private void logError(String message, Throwable e) {
         logger.error(message, e);

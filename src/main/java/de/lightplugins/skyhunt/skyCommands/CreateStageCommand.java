@@ -5,6 +5,7 @@ import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
 import com.bgsoftware.superiorskyblock.api.commands.SuperiorCommand;
 import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
+import de.lightplugins.master.Ashura;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Biome;
@@ -69,9 +70,25 @@ public final class CreateStageCommand implements SuperiorCommand {
 
     @Override
     public void execute(SuperiorSkyblock plugin, CommandSender sender, String[] args) {
+
+
         // TODO check player is not null
 
         SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer((Player) sender);
+        Island island = SuperiorSkyblockAPI.getGrid().getIslandAt(((Player) sender).getLocation());
+
+        if(args.length == 1) {
+            if(island == null) {
+                superiorPlayer.asPlayer().sendMessage("Du stehst auf keiner Insel");
+                return;
+            }
+            String stage = island.getSchematicName().replace("stage-", "");
+            Ashura.getInstance.skyhuntPlayerData.getKills(island.getName()).thenAccept(result -> {
+                Ashura.util.sendMessage(superiorPlayer.asPlayer(), "&7Du hast &e" + result + "&7 kills auf stage &e" + stage);
+            });
+            return;
+        }
+
         List<Island> allIslands = plugin.getGrid().getIslands();
 
         AtomicBoolean hasAlreadyIsland = new AtomicBoolean(false);
