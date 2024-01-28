@@ -15,6 +15,7 @@ import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.database.tables.PlayerDataTable;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
+import de.lightplugins.skyhunt.events.OnMobKill;
 import de.lightplugins.skyhunt.skyCommands.CreateStageCommand;
 import de.lightplugins.skyhunt.events.OnIslandCreate;
 import de.lightplugins.skyhunt.events.OnIslandDisband;
@@ -22,9 +23,11 @@ import de.lightplugins.skyhunt.events.HandleMobHealthBar;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
 import fr.minuskube.inv.InventoryManager;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -48,11 +51,13 @@ public class Ashura extends JavaPlugin {
     public static FileManager tutorial;
     public static FileManager playerdata;
     public static FileManager stages;
+    public static FileManager lootTable;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
     public Boolean isWorldGuard = false;
     public Boolean isEcoJobs = false;
+    public static Economy vault = null;
 
     public SkyhuntPlayerData skyhuntPlayerData;
 
@@ -78,6 +83,7 @@ public class Ashura extends JavaPlugin {
         tutorial = new FileManager(this, "tutorial.yml");
         playerdata = new FileManager(this, "playerdata.yml");
         stages = new FileManager(this, "skyhunt/stages.yml");
+        lootTable = new FileManager(this, "skyhunt/lootTable.yml");
 
         colorTranslation = new ColorTranslation();
 
@@ -123,6 +129,12 @@ public class Ashura extends JavaPlugin {
             playerDataTable.createTable();
         }
 
+        if (!setupEconomy() ) {
+            getLogger().severe("[lightAshura] Missing Vault. Disabling lightAshura ...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         Bukkit.getLogger().log(Level.INFO, "[lightAshura] Created PlayerDataTable");
 
         /*######################################*/
@@ -166,10 +178,23 @@ public class Ashura extends JavaPlugin {
             pm.registerEvents(new OnIslandCreate(), this);
             pm.registerEvents(new OnIslandDisband(), this);
             pm.registerEvents(new HandleMobHealthBar(), this);
+            pm.registerEvents(new OnMobKill(), this);
         }
 
         Bukkit.getLogger().log(Level.FINE, "[lightAshura] Successfully started lightAshrua.");
 
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        vault = rsp.getProvider();
+        return vault != null;
     }
 
     public void onDisable() { }

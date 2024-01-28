@@ -1,8 +1,9 @@
 lootTable:
   'stage-1':
-    common:
-      chance: 50
-      actions:
-        - 'VAULT;15'
-        - 'EXP;75'
-        - ''
+      '1':
+        chance: 50
+        reward: 'VAULT;20'
+        actions:
+          - 'ACTIONBAR;&7Du hast #fc143d#amount# &7Coins erhalten'
+          - 'SOUND;ENTITY_PLAYER_LEVELUP;1.7;1.0'
+          - 'MESSAGE;&7Du hast &e#amount# &7Coins erhalten'
