@@ -184,7 +184,6 @@
             <groupId>com.bgsoftware</groupId>
             <artifactId>SuperiorSkyblockAPI</artifactId>
             <version>2023.3</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

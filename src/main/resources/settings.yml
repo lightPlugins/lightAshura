@@ -16,7 +16,7 @@ mysql:
     useServerPrepStmts: true
 settings:
   skyhunt:
-    enable: true
+    enable: false
   onServerJoin:
     commands:
       enable: true

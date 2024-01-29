@@ -6,16 +6,16 @@ import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.master.Ashura;
-import de.lightplugins.skyhunt.manager.SpawnInterval;
-import io.lumine.mythic.api.mobs.MythicMob;
+import de.lightplugins.skyhunt.manager.CreateSpawner;
 import io.lumine.mythic.bukkit.MythicBukkit;
-import io.lumine.mythic.core.spawning.spawners.MythicSpawner;
 import io.lumine.mythic.core.spawning.spawners.SpawnerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -56,38 +56,37 @@ public class OnIslandCreate implements Listener {
             Runnable task = () -> {
                 Island targetIsland = SuperiorSkyblockAPI.getGrid().getIslandAt(superiorPlayer.getLocation());
                 if (event.canTeleport() && targetIsland != null) {
-
                     Location teleportLocation = targetIsland.getTeleportLocation(World.Environment.NORMAL);
-                    double radius = 150;
+                    double radius = 200;
 
                     if(teleportLocation.getWorld() == null) {
                         return;
                     }
 
                     Bukkit.getScheduler().runTask(Ashura.getInstance, () -> {
-
                         List<Entity> nearbyEntities = (List<Entity>) teleportLocation.getWorld()
                                 .getNearbyEntities(teleportLocation, radius, radius, radius, entity -> {
                                     if (entity instanceof ArmorStand) {
                                         ArmorStand armorStand = (ArmorStand) entity;
                                         return armorStand.getCustomName() != null
-                                                && armorStand.getCustomName().equals("spawn");
+                                                && armorStand.getCustomName().contains("spawn"); //contains anstelle von equals wegen cursive schriftart !!!
                                     }
                                     return false;
                                 });
 
                         if(nearbyEntities.isEmpty()) {
+                            Bukkit.getLogger().log(Level.WARNING, "nerby entitie list is empty");
                             return;
                         }
 
                         AtomicInteger counter = new AtomicInteger();
                         nearbyEntities.forEach(singleEntity -> {
-
+                            Bukkit.getLogger().log(Level.WARNING, "delete armostand: " + counter);
                             counter.getAndIncrement();
                             singleEntity.remove();
-                            SpawnInterval spawnInterval = new SpawnInterval();
+                            CreateSpawner spawnInterval = new CreateSpawner();
                             spawnInterval.createMythicSpawner(
-                                    singleEntity.getLocation(), islandID + "_" + counter);
+                                    singleEntity.getLocation(), islandID + "_" + counter, targetIsland.getSchematicName());
 
                         });
                     });
@@ -99,7 +98,6 @@ public class OnIslandCreate implements Listener {
             Bukkit.getScheduler().runTaskLater(Ashura.getInstance, () -> {
 
                 SpawnerManager spawnerManager = MythicBukkit.inst().getSpawnerManager();
-
                 spawnerManager.getSpawners().forEach(singleSpawner -> {
                     if(singleSpawner.getName().contains(superiorPlayer.getUniqueId().toString())) {
                         singleSpawner.Enable();
@@ -107,7 +105,7 @@ public class OnIslandCreate implements Listener {
                     }
                 });
 
-                physicalPlayer.sendMessage("Timer canceled");
+                physicalPlayer.sendMessage("Timer canceled and finished");
                 scheduler.cancelTask(taskid);
 
             }, 200);

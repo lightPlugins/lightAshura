@@ -6,7 +6,7 @@ version: 1.0.0
 main: de.lightplugins.master.Ashura
 api-version: 1.20
 depend: [Vault]
-softdepend: [PlaceholderAPI, WorldGuard, EcoItems, Eco, eco, EcoJobs, MythicMobs]
+softdepend: [PlaceholderAPI, WorldGuard, EcoItems, Eco, eco, EcoJobs, MythicMobs, SuperiorSkyblock]
 loadbefore: [Essentials]
 commands:
   a:

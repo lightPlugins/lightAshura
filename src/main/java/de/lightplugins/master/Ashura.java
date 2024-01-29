@@ -1,6 +1,6 @@
 package de.lightplugins.master;
 
-import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.SuperiorSkyblock;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.zaxxer.hikari.HikariDataSource;
 import de.lightplugins.comandblocker.AllowedCommands;
@@ -15,11 +15,6 @@ import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.database.tables.PlayerDataTable;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
-import de.lightplugins.skyhunt.events.OnMobKill;
-import de.lightplugins.skyhunt.skyCommands.CreateStageCommand;
-import de.lightplugins.skyhunt.events.OnIslandCreate;
-import de.lightplugins.skyhunt.events.OnIslandDisband;
-import de.lightplugins.skyhunt.events.HandleMobHealthBar;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
 import fr.minuskube.inv.InventoryManager;
@@ -57,6 +52,7 @@ public class Ashura extends JavaPlugin {
     public static Util util;
     public Boolean isWorldGuard = false;
     public Boolean isEcoJobs = false;
+    public Boolean isSuperiorSkyblock = false;
     public static Economy vault = null;
 
     public SkyhuntPlayerData skyhuntPlayerData;
@@ -102,6 +98,14 @@ public class Ashura extends JavaPlugin {
                     WorldGuardHook worldGuardHook = new WorldGuardHook();
                     worldGuardHook.setupCustomFlags();
                     isWorldGuard = true;
+                }
+            }
+
+            if (pluginName.getName().equals("SuperiorSkyblock2")) {
+                Plugin newPlugin = this.getServer().getPluginManager().getPlugin("SuperiorSkyblock2");
+                if (newPlugin instanceof SuperiorSkyblock) {
+                    getLogger().info("[lightAshura] Successfully hooked into SuperiorSkyblock");
+                    isSuperiorSkyblock = true;
                 }
             }
 
@@ -174,13 +178,11 @@ public class Ashura extends JavaPlugin {
         borderMenuManager.init();
         tutorialManager.init();
 
-        if(settings.getConfig().getBoolean("settings.skyhunt.enable")) {
-            SuperiorSkyblockAPI.registerCommand(new CreateStageCommand());
-            pm.registerEvents(new OnIslandCreate(), this);
-            pm.registerEvents(new OnIslandDisband(), this);
-            pm.registerEvents(new HandleMobHealthBar(), this);
-            pm.registerEvents(new OnMobKill(), this);
+        if(isSuperiorSkyblock) {
+            HookIntoSkyblock hookIntoSkyblock = new HookIntoSkyblock();
+            hookIntoSkyblock.hook(pm);
         }
+
 
         Bukkit.getLogger().log(Level.FINE, "[lightAshura] Successfully started lightAshrua.");
 

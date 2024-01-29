@@ -1,9 +1,22 @@
+# possible rewards:
+#
+# - VAULT;amount
+# - TALISMAN;talismans:yourTalisman (id is the config name from eco Talismans)
+# - ECOITEM;ecoitems:yourEcoItem (id is the config name from ecoItems)
+# - EXP;amount (exp, NOT levels!)
+# - CONSOLE;your custom command (do not use -/- and must be a console command)
+#
+# possible actions: in all actions you can use #data# for item names including the amount of coins or exp
+#
+# - ACTIONBAR;&7Your custom #dc143dAction &7Message (you can use hex color codes)
+# - SOUND;VALID_SOUND;pitch;volume (must be in caps! - min 0.1 max 2.0)
+# - MESSAGE;&7Your custom Message (you can use hex color codes)
+# - TITLE;&cTop title;&7Lower Title
+# - PLAYER_PARTICLE;VALID_PARTICLE (must be in caps! - spawns particle on players location)
+# - TARGET_PARTICLE;VALID_PARTICLE (must be in caps! - spawns particle on targets location)
+#
+# - chance: 50 defines the drop chance in percentage. You can use from 0.001 up tp 100.0
+#
+# - stage-1 Must be the schematic file name from is !!!
 lootTable:
-  'stage-1':
-      '1':
-        chance: 50
-        reward: 'VAULT;20'
-        actions:
-          - 'ACTIONBAR;&7Du hast #fc143d#amount# &7Coins erhalten'
-          - 'SOUND;ENTITY_PLAYER_LEVELUP;1.7;1.0'
-          - 'MESSAGE;&7Du hast &e#amount# &7Coins erhalten'
+  'stage-1': {}

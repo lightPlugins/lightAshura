@@ -48,25 +48,17 @@ public class OnMobKill implements Listener {
             return;
         }
 
-        if(deathMob.getType().equals(EntityType.SHEEP)) {
+        Ashura.getInstance.skyhuntPlayerData.getKills(island.getName()).thenAccept(currentKills -> {
 
-            Sheep sheep = (Sheep) deathMob;
-            if(sheep.isAdult()) {
-                return;
-            }
+            currentKills = currentKills + 1;
 
-            Ashura.getInstance.skyhuntPlayerData.getKills(island.getName()).thenAccept(currentKills -> {
-
-                currentKills = currentKills + 1;
-
-                Ashura.getInstance.skyhuntPlayerData.updateKills(island.getName(), currentKills).thenAccept(result -> {
-                    if(result) {
-                        Bukkit.getLogger().log(Level.WARNING, "kills successfully updated");
-                        LootManager lootManager = new LootManager(player, island);
-                        lootManager.init();
-                    }
-                });
+            Ashura.getInstance.skyhuntPlayerData.updateKills(island.getName(), currentKills).thenAccept(result -> {
+                if(result) {
+                    Bukkit.getLogger().log(Level.WARNING, "kills successfully updated");
+                    LootManager lootManager = new LootManager(player, island, event.getEntity().getLocation());
+                    lootManager.init();
+                }
             });
-        }
+        });
     }
 }
