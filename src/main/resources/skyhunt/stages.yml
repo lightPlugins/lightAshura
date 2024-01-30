@@ -1,8 +1,10 @@
 stages:
-  '1':  # NUR Zahlen von 1-99 !!!
-    schematic: stage-1
-    armorStandName: 'spawn' # Der name den der Armorstand auf der Template island hat
-    mythicMobType: SHEEP
-    killsForNextStage: 800
-    neededPermission: 'lightashura.skyhunt.stage.1'
-    lootTable: 'stage-1'
+  'stage-1':  # DIE schem file von der island
+    killsForNextStage: 1100
+    displayName: '&7Stage #ffdc431'
+  'stage-2':
+    killsForNextStage: 1700
+    displayName: '&7Stage #ffdc432'
+  'stage-3':
+    killsForNextStage: 2300
+    displayName: '&7Stage #ffdc433'

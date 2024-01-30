@@ -15,6 +15,7 @@ import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.database.tables.PlayerDataTable;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
+import de.lightplugins.skyhunt.manager.CreateIsland;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.Util;
 import fr.minuskube.inv.InventoryManager;
@@ -47,6 +48,7 @@ public class Ashura extends JavaPlugin {
     public static FileManager playerdata;
     public static FileManager stages;
     public static FileManager lootTable;
+    public static FileManager stageMenu;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
@@ -59,6 +61,9 @@ public class Ashura extends JavaPlugin {
 
     public static InventoryManager borderMenuManager;
     public static InventoryManager tutorialManager;
+    public static InventoryManager stageMenuManager;
+
+    public CreateIsland createIsland;
 
     public HashMap<String, Integer> localSkyhuntData = new HashMap<>();
 
@@ -80,6 +85,7 @@ public class Ashura extends JavaPlugin {
         playerdata = new FileManager(this, "playerdata.yml");
         stages = new FileManager(this, "skyhunt/stages.yml");
         lootTable = new FileManager(this, "skyhunt/lootTable.yml");
+        stageMenu = new FileManager(this, "skyhunt/stageMenu.yml");
 
         colorTranslation = new ColorTranslation();
 
@@ -175,12 +181,16 @@ public class Ashura extends JavaPlugin {
 
         borderMenuManager = new InventoryManager(this);
         tutorialManager = new InventoryManager(this);
+        stageMenu = new InventoryManager(this);
+
         borderMenuManager.init();
         tutorialManager.init();
+        stageMenu.init();
 
         if(isSuperiorSkyblock) {
             HookIntoSkyblock hookIntoSkyblock = new HookIntoSkyblock();
             hookIntoSkyblock.hook(pm);
+            createIsland = new CreateIsland();
         }
 
 

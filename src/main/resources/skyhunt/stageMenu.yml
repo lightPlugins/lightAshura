@@ -1,0 +1,14 @@
+stageMenu:
+  stage-1:
+    material: SHEEP_SPAWN_EGG
+    displayName: 'Stage #stage# - #status#'
+    lore:
+      - '&7 '
+      - 'Mobtyp: Baby Schafe'
+      - '&7Kills: #currentKills# / #neededKills#'
+      - ' '
+      - '&7 Das ist der Loot:'
+      - '&7 #lootTable#'
+      - ' '
+      - '&7 [!] Klicke, um dich auf diese Stage'
+      - '     zu teleportieren.'

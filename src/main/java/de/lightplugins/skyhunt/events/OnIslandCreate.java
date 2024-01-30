@@ -44,6 +44,8 @@ public class OnIslandCreate implements Listener {
             return;
         }
 
+        event.setTeleport(false); //disable the auto teleport on island create
+
         Ashura.getInstance.localSkyhuntData.put(islandID, 0);
 
         skyhuntPlayerData.createNewStageForPlayer(islandID, 0).thenAccept(result -> {

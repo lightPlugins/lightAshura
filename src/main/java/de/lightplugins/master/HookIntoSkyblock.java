@@ -1,10 +1,7 @@
 package de.lightplugins.master;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
-import de.lightplugins.skyhunt.events.HandleMobHealthBar;
-import de.lightplugins.skyhunt.events.OnIslandCreate;
-import de.lightplugins.skyhunt.events.OnIslandDisband;
-import de.lightplugins.skyhunt.events.OnMobKill;
+import de.lightplugins.skyhunt.events.*;
 import de.lightplugins.skyhunt.skyCommands.CreateStageCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -23,6 +20,7 @@ public class HookIntoSkyblock {
             pm.registerEvents(new OnIslandDisband(), Ashura.getInstance);
             pm.registerEvents(new HandleMobHealthBar(), Ashura.getInstance);
             pm.registerEvents(new OnMobKill(), Ashura.getInstance);
+            pm.registerEvents(new OnPlayerJoin(), Ashura.getInstance);
         }
     }
 
