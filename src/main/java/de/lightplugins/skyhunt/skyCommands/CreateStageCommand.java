@@ -6,6 +6,7 @@ import com.bgsoftware.superiorskyblock.api.commands.SuperiorCommand;
 import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import de.lightplugins.master.Ashura;
+import de.lightplugins.skyhunt.inventories.StagesMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Biome;
@@ -87,6 +88,13 @@ public final class CreateStageCommand implements SuperiorCommand {
                 Ashura.util.sendMessage(superiorPlayer.asPlayer(), "&7Du hast &e" + result + "&7 kills auf stage &e" + stage);
             });
             return;
+        }
+
+        if(args.length == 2) {
+            if(args[1].equalsIgnoreCase("menu")) {
+                StagesMenu.INVENTORY.open(superiorPlayer.asPlayer());
+                return;
+            }
         }
 
         List<Island> allIslands = plugin.getGrid().getIslands();

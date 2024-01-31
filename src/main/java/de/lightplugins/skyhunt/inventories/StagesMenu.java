@@ -1,14 +1,19 @@
 package de.lightplugins.skyhunt.inventories;
 
+import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.island.Island;
 import de.lightplugins.inventories.TutorialGuide;
 import de.lightplugins.master.Ashura;
+import de.lightplugins.skyhunt.util.ItemBuilder;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.Pagination;
 import fr.minuskube.inv.content.SlotIterator;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -33,12 +38,12 @@ public class StagesMenu implements InventoryProvider {
     public void init(Player player, InventoryContents inventoryContents) {
 
         Pagination pagination = inventoryContents.pagination();
-        FileConfiguration tutorial = Ashura.tutorial.getConfig();
+        FileConfiguration stageMenu = Ashura.stageMenu.getConfig();
 
-        int tutorialCounter =
-                Objects.requireNonNull(tutorial.getConfigurationSection("guide")).getKeys(false).size();
+        int stageCounter =
+                Objects.requireNonNull(stageMenu.getConfigurationSection("stageMenu")).getKeys(false).size();
 
-        ClickableItem[] levelItems = new ClickableItem[tutorialCounter];
+        ClickableItem[] stageItems = new ClickableItem[stageCounter];
 
         ItemStack glass  = new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1);
         ItemMeta glassMeta = glass.getItemMeta();
@@ -49,40 +54,34 @@ public class StagesMenu implements InventoryProvider {
 
         inventoryContents.fill(ClickableItem.empty(glass));
 
-        ItemStack firstGuide = new ItemStack(Material.WRITABLE_BOOK, 1);
-        ItemMeta firstGuideMeta = firstGuide.getItemMeta();
-
         int i = 0;
-        for(String path : Objects.requireNonNull(tutorial.getConfigurationSection("guide")).getKeys(false)) {
+        for(String path : Objects.requireNonNull(stageMenu.getConfigurationSection("stageMenu")).getKeys(false)) {
             i ++;
 
-            Material material = Material.valueOf(tutorial.getString("guide." + path + ".material"));
-            String title = tutorial.getString("guide." + path + ".displayname");
-
-            ItemStack is = new ItemStack(material);
-            ItemMeta im = is.getItemMeta();
-            assert im != null;
-            im.setDisplayName(Ashura.colorTranslation.hexTranslation(title));
-
-            List<String> lore = new ArrayList<>();
-
-            tutorial.getStringList("guide." + path + ".lore").forEach(line -> {
-                lore.add(Ashura.colorTranslation.hexTranslation(line));
-            });
-
-            im.setLore(lore);
-            is.setItemMeta(im);
+            String stageID = path.replace("stage-", "");
+            ItemBuilder itemBuilder = new ItemBuilder();
+            ItemStack stageItem = itemBuilder.getItemByStage(player, stageID);
 
 
-            levelItems[i - 1] = ClickableItem.of(is, e -> {
+            stageItems[i - 1] = ClickableItem.of(stageItem, e -> {
+
+                String islandID = player.getUniqueId() + "#" + stageID;
+                Island island = SuperiorSkyblockAPI.getIsland(islandID);
+                Location islandSpawnLocation = island.getTeleportLocation(World.Environment.NORMAL);
+                player.teleport(islandSpawnLocation);
 
             });
         }
 
-        pagination.setItems(levelItems);
-        pagination.setItemsPerPage(7);
+        pagination.setItems(stageItems);
+        pagination.setItemsPerPage(21);
 
-        pagination.addToIterator(inventoryContents.newIterator(SlotIterator.Type.HORIZONTAL, 1,1));
+        pagination.addToIterator(inventoryContents.newIterator(SlotIterator.Type.HORIZONTAL, 1 ,1)
+                .blacklist(1, 8)
+                .blacklist(2, 8)
+                .blacklist(2, 0)
+                .blacklist(3, 0)
+        );
 
         ItemStack previousPage = new ItemStack(Material.ARROW);
         ItemMeta previousPageMeta = previousPage.getItemMeta();
@@ -105,15 +104,17 @@ public class StagesMenu implements InventoryProvider {
 
         backButton.setItemMeta(backButtonMeta);
 
-        inventoryContents.set(2, 2, ClickableItem.of(previousPage, e -> {
+        // i = up to down && I1 = left to right
+
+        inventoryContents.set(5, 2, ClickableItem.of(previousPage, e -> {
             INVENTORY.open(player, pagination.previous().getPage());
         }));
 
-        inventoryContents.set(2, 6, ClickableItem.of(nextPage, e -> {
+        inventoryContents.set(5, 6, ClickableItem.of(nextPage, e -> {
             INVENTORY.open(player, pagination.next().getPage());
         }));
 
-        inventoryContents.set(2, 4, ClickableItem.of(backButton, e -> {
+        inventoryContents.set(5, 4, ClickableItem.of(backButton, e -> {
             player.closeInventory();
         }));
 

@@ -181,11 +181,11 @@ public class Ashura extends JavaPlugin {
 
         borderMenuManager = new InventoryManager(this);
         tutorialManager = new InventoryManager(this);
-        stageMenu = new InventoryManager(this);
+        stageMenuManager = new InventoryManager(this);
 
         borderMenuManager.init();
         tutorialManager.init();
-        stageMenu.init();
+        stageMenuManager.init();
 
         if(isSuperiorSkyblock) {
             HookIntoSkyblock hookIntoSkyblock = new HookIntoSkyblock();
