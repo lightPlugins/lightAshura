@@ -5,16 +5,13 @@ import de.lightplugins.master.Ashura;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
@@ -95,7 +92,6 @@ public class ItemBuilder {
                     im.setLore(finalLore);
                     is.setItemMeta(im);
                     return is;
-
 
                 }catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException("error", e);
