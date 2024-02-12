@@ -18,13 +18,8 @@ public class TrashInventoryCommand implements CommandExecutor {
 
         String title = Ashura.colorTranslation.hexTranslation("#ffdc73ASHURA &8| &8Mülleimer");
 
-        if(args.length == 1) {
-
-            Inventory inv = Bukkit.createInventory(null, 27, title);
-            player.openInventory(inv);
-            return false;
-        }
-
+        Inventory inv = Bukkit.createInventory(null, 27, title);
+        player.openInventory(inv);
         return false;
     }
 }
