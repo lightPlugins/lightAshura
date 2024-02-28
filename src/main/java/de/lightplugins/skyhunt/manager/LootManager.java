@@ -70,6 +70,22 @@ public class LootManager {
                         break;
                     }
 
+                    case "VANILLA" : {
+                        Material material = Material.valueOf(reward[1]);
+                        ItemStack is = new ItemStack(material);
+
+                        if(!Ashura.util.isInventoryFull(player)) {
+                            player.getInventory().addItem(is);
+                            return;
+                        }
+
+                        Bukkit.getScheduler().runTask(Ashura.getInstance, () -> {
+                            player.getWorld().dropItemNaturally(player.getLocation(), is);
+                        });
+
+                        break;
+                    }
+
                     case "ECOITEM" : {
                         initEcoLookUp(reward, actions);
                         break;
