@@ -17,7 +17,7 @@ public class WorldGuardHook {
 
         try {
 
-            StateFlag flag = new StateFlag("no-lava-damage", true);
+            StateFlag flag = new StateFlag("no-lava-damage", false);
             registry.register(flag);
             NO_LAVA_DAMAGE = flag; // only set our field if there was no error
 

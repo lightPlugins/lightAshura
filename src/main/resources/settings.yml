@@ -17,6 +17,9 @@ mysql:
 settings:
   skyhunt:
     enable: false
+  protectItems:
+    onFishing: true
+    timer: 10 # in seconds
   onServerJoin:
     commands:
       enable: true
