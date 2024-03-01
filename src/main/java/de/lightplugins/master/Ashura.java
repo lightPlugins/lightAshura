@@ -15,9 +15,9 @@ import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.database.tables.PlayerDataTable;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
-import de.lightplugins.lootprotection.ProtectDrops;
 import de.lightplugins.skyhunt.manager.CreateIsland;
 import de.lightplugins.util.ColorTranslation;
+import de.lightplugins.util.TestEvent;
 import de.lightplugins.util.Util;
 import fr.minuskube.inv.InventoryManager;
 import net.milkbowl.vault.economy.Economy;
@@ -179,7 +179,7 @@ public class Ashura extends JavaPlugin {
         // a "wheat" y thing xd lol
         pm.registerEvents(new DropManipulation(), this);
         pm.registerEvents(new AllowedCommands(), this);
-        pm.registerEvents(new ProtectDrops(), this);
+        pm.registerEvents(new TestEvent(), this);
 
         borderMenuManager = new InventoryManager(this);
         tutorialManager = new InventoryManager(this);
