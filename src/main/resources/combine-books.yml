@@ -1,0 +1,6 @@
+combine:
+  disableEnchantCombine:
+    title: '§4§lAnvil; §cDu kannst &4#enchantment# &cnicht kombinieren'
+    sound: 'ENTITY_VILLAGER_NO;1.0;1.0'
+    fromList:
+      - 'veinminer'

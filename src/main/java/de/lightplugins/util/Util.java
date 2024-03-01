@@ -61,4 +61,11 @@ public class Util {
 
         return randomValue < desiredProbability;
     }
+
+    public String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input; // Rückgabe des ursprünglichen Strings, wenn er null oder leer ist
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
 }

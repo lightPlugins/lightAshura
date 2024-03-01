@@ -3,6 +3,7 @@ package de.lightplugins.master;
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblock;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.zaxxer.hikari.HikariDataSource;
+import de.lightplugins.anvil.PreventAnvilUse;
 import de.lightplugins.comandblocker.AllowedCommands;
 import de.lightplugins.commands.AshuraCommandManager;
 import de.lightplugins.commands.DiscordCommand;
@@ -50,6 +51,7 @@ public class Ashura extends JavaPlugin {
     public static FileManager stages;
     public static FileManager lootTable;
     public static FileManager stageMenu;
+    public static FileManager combineBooks;
 
     public static ColorTranslation colorTranslation;
     public static Util util;
@@ -87,6 +89,7 @@ public class Ashura extends JavaPlugin {
         stages = new FileManager(this, "skyhunt/stages.yml");
         lootTable = new FileManager(this, "skyhunt/lootTable.yml");
         stageMenu = new FileManager(this, "skyhunt/stageMenu.yml");
+        combineBooks = new FileManager(this, "combine-books.yml");
 
         colorTranslation = new ColorTranslation();
 
@@ -179,7 +182,9 @@ public class Ashura extends JavaPlugin {
         // a "wheat" y thing xd lol
         pm.registerEvents(new DropManipulation(), this);
         pm.registerEvents(new AllowedCommands(), this);
+
         pm.registerEvents(new TestEvent(), this);
+        pm.registerEvents(new PreventAnvilUse(), this);
 
         borderMenuManager = new InventoryManager(this);
         tutorialManager = new InventoryManager(this);
