@@ -149,6 +149,12 @@
 
         <dependency>
             <groupId>com.willfp</groupId>
+            <artifactId>EcoSkills</artifactId>
+            <version>3.44.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.willfp</groupId>
             <artifactId>EcoArmor</artifactId>
             <version>8.55.2</version>
         </dependency>

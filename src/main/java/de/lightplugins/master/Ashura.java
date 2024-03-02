@@ -16,6 +16,7 @@ import de.lightplugins.database.querys.SkyhuntPlayerData;
 import de.lightplugins.database.tables.PlayerDataTable;
 import de.lightplugins.events.*;
 import de.lightplugins.files.FileManager;
+import de.lightplugins.fishing.Seacreatures;
 import de.lightplugins.skyhunt.manager.CreateIsland;
 import de.lightplugins.util.ColorTranslation;
 import de.lightplugins.util.TestEvent;
@@ -185,6 +186,8 @@ public class Ashura extends JavaPlugin {
 
         pm.registerEvents(new TestEvent(), this);
         pm.registerEvents(new PreventAnvilUse(), this);
+
+        pm.registerEvents(new Seacreatures(), this);
 
         borderMenuManager = new InventoryManager(this);
         tutorialManager = new InventoryManager(this);
